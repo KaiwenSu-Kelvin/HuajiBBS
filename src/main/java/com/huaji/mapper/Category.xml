@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.huaji.dao.CategoryDao">
+
+	<select id="getSectionsById" parameterType="int" resultType="Section">
+		select *
+		from section
+		where cate_id = #{id}
+	</select>
+	
+	<resultMap type="Category" id="getCategoryById">
+		<id property="id" column="id" />
+		<collection property="sections" ofType="Section" column="id" select="getSectionsById"></collection>
+	</resultMap>
+
+	<select id="findAll" resultMap="getCategoryById"
+		resultType="Category">
+		select *
+		from category
+	</select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.huaji.dao.FloorDao">
+
+	<insert id="insert" parameterType="Floor" useGeneratedKeys="true">
+		insert into floor (content,datetime,user_id,post_id)
+        values (#{content},#{datetime},#{user.id},#{post.id})
+	</insert>
+	
+	<select id="getFloorUser" parameterType="int" resultType="User">
+		select * from User where id = #{user_id}
+	</select>
+	
+	<resultMap type="Floor" id="getFloor">
+  		<id property="id" column="id"/>
+  		<association property="user" column="user_id" select="getFloorUser"></association>
+  	</resultMap>
+	
+	<select id="findFloorsByPostId" parameterType="int" resultMap="getFloor">
+		select * from floor
+		where post_id = #{post_id}
+	</select>
+</mapper>

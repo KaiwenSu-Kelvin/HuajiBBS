@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+	xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd 
+       
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd 
+       
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       
+        http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- 声明含有注解的Java类(Controller, Dao, BizImpl)的位置，并进行扫描注册 -->
+	<context:component-scan
+		base-package="com.huaji.controller" />
+
+	<!-- 注册HandlerMapper、HandlerAdapter映射类，声明基于注解的映射描述。 -->
+	<mvc:annotation-driven />
+
+	<!-- 声明对静态资源、动态资源的分开处理 -->
+	<mvc:default-servlet-handler />
+
+	<!-- 声明视图解析器，完成逻辑视图名和物理视图资源的绑定 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 绑定方式：将给出的视图逻辑（资源）名和下列给出的前缀和后缀绑定，申明物理视图资源名称 -->
+		<property name="prefix" value="/WEB-INF/page/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+		        <!-- 文件上传的解析器 -->
+        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        	<!-- 上传图片的最大尺寸 10M-->
+        	<property name="maxUploadSize" value="10485760"></property>
+        	<!-- 默认编码 -->
+        	<property name="defaultEncoding" value="utf-8"></property>
+        </bean>
+
+</beans>

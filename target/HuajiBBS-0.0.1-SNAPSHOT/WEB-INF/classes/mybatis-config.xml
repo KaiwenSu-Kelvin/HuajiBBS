@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- 系统|全局配置文件 -->
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ <configuration>
+ 	<!-- 0.声明使用的属性文件名称 -->
+ 	<properties resource="dbinfo.properties"/>
+ 	<!-- 0.配置别名 -->
+ 	<typeAliases>
+ 		<!-- 将长的全限定的类名使用短的类名指代 -->
+		<package name="com.huaji.domain.po"/>
+ 	</typeAliases>
+ 	<!-- 1.指定环境 -->
+ 	<environments default="dev">
+ 		<environment id="dev">
+ 			<!-- 实际指定具体某一个环境的相应配置信息 -->
+ 			<!-- 指定事物处理方式 -->
+ 			<transactionManager type="JDBC"/>
+ 			<!-- 配置连接池，连接方式：url、usn、pwd -->
+ 			<dataSource type="POOLED">
+ 				<property name="driver" value="${driver}"/>
+ 				<property name="url" value="${url}"/>
+ 				<property name="username" value="${usn}"/>
+ 				<property name="password" value="${pwd}"/>
+ 			</dataSource>
+ 		</environment>
+ 	</environments>
+ 	<!-- 2.指定映射配置文件信息 -->
+ 	<mappers>
+ 		<mapper resource="com/huaji/mapper/Category.xml"/>
+ 		<mapper resource="com/huaji/mapper/Section.xml"/>
+ 		<mapper resource="com/huaji/mapper/Post.xml"/>
+ 		<mapper resource="com/huaji/mapper/User.xml"/>
+ 		<mapper resource="com/huaji/mapper/Admin.xml"/>
+ 		<mapper resource="com/huaji/mapper/Floor.xml"/>
+ 	</mappers>
+ </configuration>

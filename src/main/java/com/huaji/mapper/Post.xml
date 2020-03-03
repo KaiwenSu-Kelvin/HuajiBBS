@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+ <mapper namespace="com.huaji.dao.PostDao">
+  	
+  	<select id="getSectionCatgory" parameterType="int" resultType="Category">
+		select * from category where  id = #{cate_id}
+	</select>
+	
+	<resultMap type="Section" id="getSecion">
+		<id column="id" property="id"/>
+		<association property="category" column="cate_id" select="getSectionCatgory"></association>
+	</resultMap>
+  	
+	<select id="getPostUser" parameterType="int" resultType="User">
+		select * from User where id = #{user_id}
+	</select>
+	
+	
+	
+	<select id="getPostSection" parameterType="int" resultType="Section" resultMap="getSecion">
+		select * from Section where id = #{section_id}
+	</select>
+	
+  	<select id="getFloorUser" parameterType="int" resultType="User">
+		select * from User where id = #{user_id}
+	</select>
+  	
+  	<resultMap type="Floor" id="getFloor">
+  		<id property="id" column="id"/>
+  		<association property="user" column="user_id" select="getFloorUser"></association>
+  	</resultMap>
+  	
+  	<select id="getFloorsByPostId" parameterType="int" resultType="Floor" resultMap="getFloor">
+  		select * from floor where post_id = #{id}
+  	</select>
+  	
+  	
+  	<resultMap type="Post" id="getPosts">
+  		<id property="id" column="id"/>
+  		<association property="user" column="user_id" select="getPostUser"></association>
+  		<association property="section" column="section_id" select="getPostSection"></association>
+  		<collection property="floors" ofType="Floor" column="id" select="getFloorsByPostId"></collection>
+  	</resultMap>
+  	
+  	<select id="findById" parameterType="int" resultMap="getPosts">
+  		select *
+  		from post
+  		where id = #{id}
+  	</select>
+  	
+  	
+  	<select id="findAll" resultType="Post" resultMap="getPosts">
+  		select * from Post
+  	</select>
+  	
+  	<select id="findBySectionId" resultType="Post" resultMap="getPosts">
+  		select * from Post
+  		where section_id = #{section_id}
+  		AND
+  		visible = 1
+  		order by top_status DESC,time DESC
+  	</select>
+  	
+  	
+  	<update id="update" parameterType="Post">
+		update post set 
+		visible =  #{visible},
+		top_status = #{top_status}
+		where id = #{id}
+	</update>
+	
+	
+	
+	<select id="findByUserId" parameterType="int" resultType="Post" resultMap="getPosts">
+  		select * from Post where user_id = #{user_id}
+  	</select>
+  	
+  	
+  	<select id="findLuceneId" parameterType="String" resultType="Post">
+  		select * from Post where content = #{content}
+  	</select>
+  	
+    <insert id="addPost" parameterType="Post">
+	     insert into post (title,content,time,section_id,user_id,top_status,visible) values (#{title},#{content},now(),#{sectionId},#{userId},0,1)
+	</insert>
+	
+	
+  	
+ </mapper>
+ 
